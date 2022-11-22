@@ -119,6 +119,8 @@ window.addEventListener('resize', () => {
  * Camera
  */
 // Group
+// we can control camera group to implement the parallax effect
+// and access the camera itself to move the camera
 const cameraGroup = new THREE.Group()
 scene.add(cameraGroup)
 
