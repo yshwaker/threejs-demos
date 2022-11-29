@@ -1,35 +1,33 @@
-import {
-  softShadows,
-  OrbitControls,
-  useHelper,
-  BakeShadows,
-  RandomizedLight,
-  AccumulativeShadows,
-} from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
-import { Perf } from "r3f-perf";
-import { useRef } from "react";
-import * as THREE from "three";
-
-// softShadows({
-//   frustum: 3.75,
-//   size: 0.005,
-//   near: 9.5,
-//   samples: 17,
-//   rings: 11,
-// });
+import { useControls } from "leva"
+import { OrbitControls, ContactShadows } from "@react-three/drei"
+import { useFrame } from "@react-three/fiber"
+import { Perf } from "r3f-perf"
+import { useRef } from "react"
 
 export default function Experience() {
-  const directionalLight = useRef();
-  // useHelper(directionalLight, THREE.DirectionalLightHelper, 1);
+  const directionalLight = useRef()
 
-  const cube = useRef();
+  const { color, opacity, blur } = useControls("contact shadow", {
+    color: "#000",
+    opacity: {
+      value: 0.4,
+      min: 0,
+      max: 1,
+    },
+    blur: {
+      value: 2.8,
+      min: 0,
+      max: 10,
+    },
+  })
+
+  const cube = useRef()
 
   useFrame((state, delta) => {
-    const time = state.clock.elapsedTime;
-    cube.current.rotation.y += delta * 0.2;
-    cube.current.position.x = 2 + Math.sin(time);
-  });
+    const time = state.clock.elapsedTime
+    cube.current.rotation.y += delta * 0.2
+    cube.current.position.x = 2 + Math.sin(time)
+  })
 
   return (
     <>
@@ -40,30 +38,16 @@ export default function Experience() {
 
       <OrbitControls makeDefault />
 
-      {/* place it right above the floor */}
-      <AccumulativeShadows
+      <ContactShadows
         position={[0, -0.99, 0]}
-        color="#316d39"
-        opacity={0.8}
-        // render 100 times on the first frame, causing the page to freeze
-        // iOS will try to reload if the page freezes for a long time
-        frames={Infinity}
-        // this allows threejs to render 100 times, but onece for each frame.
-        // so we can see the shadow created gradually.
-        // it solves the freeze but may looks weird
-        temporal
-        blend={100}
-      >
-        <RandomizedLight
-          position={[1, 2, 3]}
-          castShadow
-          amount={8}
-          radius={1}
-          ambient={0.5}
-          intensity={1}
-          bias={0.001}
-        />
-      </AccumulativeShadows>
+        scale={10}
+        resolution={512}
+        far={5}
+        color={color}
+        blur={blur}
+        opacity={opacity}
+        frames={1}
+      />
 
       <directionalLight
         castShadow
@@ -95,5 +79,5 @@ export default function Experience() {
         <meshStandardMaterial color="greenyellow" />
       </mesh>
     </>
-  );
+  )
 }

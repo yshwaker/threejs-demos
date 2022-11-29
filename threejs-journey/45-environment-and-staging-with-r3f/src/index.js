@@ -1,13 +1,13 @@
-import { Canvas } from '@react-three/fiber'
-import ReactDOM from 'react-dom/client'
-import Experience from './Experience.js'
-import './style.css'
+import { Canvas } from "@react-three/fiber"
+import ReactDOM from "react-dom/client"
+import Experience from "./Experience.js"
+import "./style.css"
 
-const root = ReactDOM.createRoot(document.querySelector('#root'))
+const root = ReactDOM.createRoot(document.querySelector("#root"))
 
 root.render(
   <Canvas
-    shadows
+    // shadows
     camera={{
       fov: 45,
       near: 0.1,
