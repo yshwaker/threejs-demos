@@ -1,5 +1,5 @@
 import { useControls } from "leva"
-import { OrbitControls, ContactShadows, Sky } from "@react-three/drei"
+import { OrbitControls, ContactShadows, Environment } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
 import { Perf } from "r3f-perf"
 import { useRef } from "react"
@@ -25,6 +25,10 @@ export default function Experience() {
     sunPosition: {
       value: [1, 2, 3],
     },
+  })
+
+  const { envMapIntensity } = useControls({
+    envMapIntensity: { value: 3.5, min: 0, max: 12 },
   })
 
   const cube = useRef()
@@ -70,19 +74,39 @@ export default function Experience() {
       />
       <ambientLight intensity={0.5} />
 
-      <Sky sunPosition={sunPosition} />
+      <Environment
+        background
+        // files="./environmentMaps/the_sky_is_on_fire_2k.hdr"
+        preset="sunset"
+      >
+        <mesh position-z={-5} scale={10}>
+          <planeGeometry />
+          <meshBasicMaterial color="red" />
+        </mesh>
+      </Environment>
 
-      <mesh castShadow position-x={-2}>
+      <mesh castShadow position-x={-2} envMapIntensity={envMapIntensity}>
         <sphereGeometry />
         <meshStandardMaterial color="orange" />
       </mesh>
 
-      <mesh castShadow ref={cube} position-x={2} scale={1.5}>
+      <mesh
+        castShadow
+        ref={cube}
+        position-x={2}
+        scale={1.5}
+        envMapIntensity={envMapIntensity}
+      >
         <boxGeometry />
         <meshStandardMaterial color="mediumpurple" />
       </mesh>
 
-      <mesh position-y={-1} rotation-x={-Math.PI * 0.5} scale={10}>
+      <mesh
+        position-y={-1}
+        rotation-x={-Math.PI * 0.5}
+        scale={10}
+        envMapIntensity={envMapIntensity}
+      >
         <planeGeometry />
         <meshStandardMaterial color="greenyellow" />
       </mesh>
