@@ -1,5 +1,10 @@
 import { useControls } from "leva"
-import { OrbitControls, ContactShadows, Environment } from "@react-three/drei"
+import {
+  OrbitControls,
+  ContactShadows,
+  Environment,
+  Lightformer,
+} from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
 import { Perf } from "r3f-perf"
 import { useRef } from "react"
@@ -59,35 +64,43 @@ export default function Experience() {
         frames={1}
       />
 
-      <directionalLight
-        castShadow
-        shadow-mapSize={[1024, 1024]}
-        shadow-camera-near={1}
-        shadow-camera-far={10}
-        shadow-camera-top={5}
-        shadow-camera-right={5}
-        shadow-camera-bottom={-5}
-        shadow-camera-left={-5}
-        ref={directionalLight}
-        position={sunPosition}
-        intensity={1.5}
-      />
-      <ambientLight intensity={0.5} />
+      {/* <directionalLight */}
+      {/*   castShadow */}
+      {/*   shadow-mapSize={[1024, 1024]} */}
+      {/*   shadow-camera-near={1} */}
+      {/*   shadow-camera-far={10} */}
+      {/*   shadow-camera-top={5} */}
+      {/*   shadow-camera-right={5} */}
+      {/*   shadow-camera-bottom={-5} */}
+      {/*   shadow-camera-left={-5} */}
+      {/*   ref={directionalLight} */}
+      {/*   position={sunPosition} */}
+      {/*   intensity={1.5} */}
+      {/* /> */}
+      {/* <ambientLight intensity={0.5} /> */}
 
       <Environment
         background
-        // files="./environmentMaps/the_sky_is_on_fire_2k.hdr"
-        preset="sunset"
+      // files="./environmentMaps/the_sky_is_on_fire_2k.hdr"
+      // preset="sunset"
       >
-        <mesh position-z={-5} scale={10}>
-          <planeGeometry />
-          <meshBasicMaterial color="red" />
-        </mesh>
+        <color args={["#000"]} attach="background" />
+        <Lightformer
+          position-z={-5}
+          scale={10}
+          color="red"
+          intensity={10}
+          form="ring"
+        />
+        {/* <mesh position-z={-5} scale={10}> */}
+        {/*   <planeGeometry /> */}
+        {/*   <meshBasicMaterial color="red" /> */}
+        {/* </mesh> */}
       </Environment>
 
       <mesh castShadow position-x={-2} envMapIntensity={envMapIntensity}>
         <sphereGeometry />
-        <meshStandardMaterial color="orange" />
+        <meshStandardMaterial color="orange" roughness={0.1} metalness={0.4} />
       </mesh>
 
       <mesh
