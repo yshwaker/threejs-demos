@@ -92,14 +92,14 @@ export default function Experience() {
         preset="sunset"
       ></Environment>
 
-      <mesh
-        castShadow
-        position-x={-2}
-        position-y={1}
-        envMapIntensity={envMapIntensity}
-      >
+      <mesh castShadow position-x={-2} position-y={1}>
         <sphereGeometry />
-        <meshStandardMaterial color="orange" roughness={0.1} metalness={0.4} />
+        <meshStandardMaterial
+          color="orange"
+          roughness={0.1}
+          metalness={0.4}
+          envMapIntensity={envMapIntensity}
+        />
       </mesh>
 
       <mesh
