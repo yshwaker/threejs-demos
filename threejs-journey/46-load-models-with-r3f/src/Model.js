@@ -1,18 +1,15 @@
-import { useLoader } from '@react-three/fiber'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { Clone, useGLTF } from '@react-three/drei'
 
 export default function Model() {
-  const model = useLoader(
-    GLTFLoader,
-    './FlightHelmet/glTF/FlightHelmet.gltf',
-    (loader) => {
-      // we can access the instance of the gltfloader here
-      const dracoLoader = new DRACOLoader()
-      dracoLoader.setDecoderPath('./draco/')
-      loader.setDRACOLoader(dracoLoader)
-    }
-  )
+  const model = useGLTF('./hamburger.glb')
 
-  return <primitive object={model.scene} scale={5} position-y={-1} />
+  return (
+    <>
+      <Clone object={model.scene} scale={0.35} position-y={-1} />
+      <Clone object={model.scene} scale={0.35} position-y={4} />
+      <Clone object={model.scene} scale={0.35} position-y={9} />
+    </>
+  )
 }
+
+useGLTF.preload('./hamburger.glb')
