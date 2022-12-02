@@ -4,13 +4,22 @@ import {
   Text3D,
   useMatcapTexture,
 } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import { Perf } from 'r3f-perf'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 export default function Experience() {
   const [matcapTexture] = useMatcapTexture('7B5254_E9DCC7_B19986_C8AC91', 256)
   const [torusGeometry, setTorusGeometry] = useState()
   const [material, setMaterial] = useState()
+  const donutsGroup = useRef()
+
+  useFrame((state, delta) => {
+    for (const donut of donutsGroup.current.children) {
+      donut.rotation.y += delta * 0.2
+    }
+  })
+
   return (
     <>
       <Perf position="top-left" />
@@ -36,24 +45,26 @@ export default function Experience() {
         </Text3D>
       </Center>
 
-      {[...Array(100)].map((_, index) => (
-        <mesh
-          geometry={torusGeometry}
-          material={material}
-          key={index}
-          position={[
-            (Math.random() - 0.5) * 10,
-            (Math.random() - 0.5) * 10,
-            (Math.random() - 0.5) * 10,
-          ]}
-          scale={Math.random()}
-          rotation={[
-            Math.random() * Math.PI,
-            Math.random() * Math.PI,
-            Math.random() * Math.PI,
-          ]}
-        ></mesh>
-      ))}
+      <group ref={donutsGroup}>
+        {[...Array(100)].map((_, index) => (
+          <mesh
+            geometry={torusGeometry}
+            material={material}
+            key={index}
+            position={[
+              (Math.random() - 0.5) * 10,
+              (Math.random() - 0.5) * 10,
+              (Math.random() - 0.5) * 10,
+            ]}
+            scale={Math.random()}
+            rotation={[
+              Math.random() * Math.PI,
+              Math.random() * Math.PI,
+              Math.random() * Math.PI,
+            ]}
+          ></mesh>
+        ))}
+      </group>
     </>
   )
 }
