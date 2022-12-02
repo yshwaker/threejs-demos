@@ -2,7 +2,9 @@ import {
   Center,
   OrbitControls,
   shaderMaterial,
+  Sky,
   Sparkles,
+  Stars,
   useGLTF,
   useTexture,
 } from '@react-three/drei'
@@ -15,8 +17,8 @@ import portalVertexShader from './shaders/portal/vertex'
 const PortalMaterial = shaderMaterial(
   {
     uTime: 0,
-    uColorStart: new THREE.Color('#fff'),
-    uColorEnd: new THREE.Color('#000'),
+    uColorStart: new THREE.Color('#8e5bba'),
+    uColorEnd: new THREE.Color('#e6d7c3'),
   },
   portalVertexShader,
   portalFragmentShader
@@ -39,6 +41,24 @@ export default function Experience() {
     <>
       <color args={['#201919']} attach="background" />
       <OrbitControls makeDefault />
+      <Sky
+        distance={3000}
+        inclination={0.39}
+        turbidity={8}
+        rayleigh={6}
+        mieCoefficient={0.005}
+        mieDirectionalG={0.8}
+      />
+
+      <Stars
+        radius={20}
+        depth={50}
+        count={5000}
+        factor={4}
+        saturation={0}
+        fade
+        speed={1}
+      />
 
       <Center>
         <mesh geometry={nodes.baked.geometry}>
