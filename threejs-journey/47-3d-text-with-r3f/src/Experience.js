@@ -12,10 +12,10 @@ export default function Experience() {
   const [matcapTexture] = useMatcapTexture('7B5254_E9DCC7_B19986_C8AC91', 256)
   const [torusGeometry, setTorusGeometry] = useState()
   const [material, setMaterial] = useState()
-  const donutsGroup = useRef()
+  const donutsGroup = useRef([])
 
   useFrame((state, delta) => {
-    for (const donut of donutsGroup.current.children) {
+    for (const donut of donutsGroup.current) {
       donut.rotation.y += delta * 0.2
     }
   })
@@ -45,26 +45,27 @@ export default function Experience() {
         </Text3D>
       </Center>
 
-      <group ref={donutsGroup}>
-        {[...Array(100)].map((_, index) => (
-          <mesh
-            geometry={torusGeometry}
-            material={material}
-            key={index}
-            position={[
-              (Math.random() - 0.5) * 10,
-              (Math.random() - 0.5) * 10,
-              (Math.random() - 0.5) * 10,
-            ]}
-            scale={Math.random()}
-            rotation={[
-              Math.random() * Math.PI,
-              Math.random() * Math.PI,
-              Math.random() * Math.PI,
-            ]}
-          ></mesh>
-        ))}
-      </group>
+      {[...Array(100)].map((_, index) => (
+        <mesh
+          ref={(element) => {
+            donutsGroup.current[index] = element
+          }}
+          geometry={torusGeometry}
+          material={material}
+          key={index}
+          position={[
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 10,
+          ]}
+          scale={Math.random()}
+          rotation={[
+            Math.random() * Math.PI,
+            Math.random() * Math.PI,
+            Math.random() * Math.PI,
+          ]}
+        ></mesh>
+      ))}
     </>
   )
 }
